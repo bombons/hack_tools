@@ -66,3 +66,22 @@ function download_bombons
 {
     download_latest_notbitbucket "https://github.com" "https://github.com/bombons/$1/releases" "$2" "$3.zip"
 }
+
+# download from bitbucket downloads
+function download_bitbucket_bombons
+# $1 is subdir on account bitbucket
+# $2 is prefix of zip file name
+# $3 is output file name (optional, otherwise uses remote name)
+{
+    echo "downloading $2:"
+    curl $curl_options_silent --output /tmp/org.bombons.download.txt https://bitbucket.org/bombons/$1/downloads/
+    local scrape=$(grep -o -m 1 "/bombons/$1/downloads/$2.*\.zip" /tmp/org.bombons.download.txt | perl -ne 'print $1 if /(.*)\"/')
+    local url=https://bitbucket.org$scrape
+    echo $url
+    if [ "$3" == "" ]; then
+        curl $curl_options --remote-name "$url"
+    else
+        curl $curl_options --output "$3" "$url"
+    fi
+    echo
+}
