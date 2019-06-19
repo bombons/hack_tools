@@ -8,7 +8,7 @@ CP=cp
 CP='echo # cp'
 
 # certain kexts are exceptions to automatic installation
-STANDARD_EXCEPTIONS="Sensors|dspci|WhateverName|TSCAdjustReset"
+STANDARD_EXCEPTIONS="Sensors|dspci|WhateverName|TSCAdjustReset|XHCI"
 if [[ "$EXCEPTIONS" == "" ]]; then
     EXCEPTIONS="$STANDARD_EXCEPTIONS"
 else
@@ -263,6 +263,7 @@ function rebuild_kernel_cache
 
 function finish_kexts
 {
+    echo "${GREEN}==>${RESET} create LiluFriend kext..."
     # rebuild cache before making LiluFriend
     remove_kext LiluFriendLite.kext
     remove_kext LiluFriend.kext
@@ -270,8 +271,10 @@ function finish_kexts
 
     # create LiluFriend (not currently using LiluFriendLite) and install
     create_and_install_lilufriend
+    echo
 
     # all kexts are now installed, so rebuild cache again
+    echo "${GREEN}==>${RESET} all kexts are now installed, so rebuild cache again..."
     rebuild_kernel_cache
 }
 
@@ -297,8 +300,40 @@ function update_efi_kexts
 
 function install_tscadjustreset
 {
+    echo "${GREEN}==>${RESET} create TSCAdjustReset kext..."
     "$(dirname ${BASH_SOURCE[0]})"/create_tscadjustreset.sh downloads/kexts/*TSCAdjustReset/TSCAdjustReset.kext/Contents/Info.plist
     install_kext downloads/kexts/*TSCAdjustReset/TSCAdjustReset.kext
+    echo
+}
+
+function install_xhc
+{
+    echo "${GREEN}==>${RESET} choose XHCI kext..."
+
+    cd downloads/kexts/kgp-XHC_USB_truncated/ || exit 1
+    for w in *.kext
+    do
+        options=("$w" "${options[@]}")
+    done
+    cd ../../.. || exit 1
+
+    prompt="Please select your motherboard:"
+    PS3="$prompt "
+    select xhci_kext in "${options[@]}" "Quit" ; do
+        if (( REPLY == 1 + ${#options[@]} )) ; then
+            exit
+
+        elif (( REPLY > 0 && REPLY <= ${#options[@]} )) ; then
+            break
+
+        else
+            echo "Invalid option. Try another one."
+        fi
+    done
+
+    install_kext downloads/kexts/kgp-XHC_USB_truncated/"$xhci_kext"
+
+    echo
 }
 
 #EOF
