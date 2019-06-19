@@ -96,5 +96,19 @@ function download_cloverconfig() {
         curl $curl_options --output "$2" "$url"
     fi
     echo
+}
 
+function download_raw() {
+    local file="$(basename $1)"
+    local file="${file%.*}"
+
+    echo "downloading $file:"
+    local url="$1"
+    echo $url
+    if [ "$2" == "" ]; then
+        curl $curl_options --remote-name "$url"
+    else
+        curl $curl_options --output "$2" "$url"
+    fi
+    echo
 }
