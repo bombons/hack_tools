@@ -85,3 +85,16 @@ function download_bitbucket_bombons
     fi
     echo
 }
+
+function download_cloverconfig() {
+    echo "downloading $1:"
+    local url='https://mackie100projects.altervista.org/apps/cloverconf/download-new-build.php?version=global'
+    echo $url
+    if [ "$2" == "" ]; then
+        curl $curl_options --remote-name "$url"
+    else
+        curl $curl_options --output "$2" "$url"
+    fi
+    echo
+
+}
