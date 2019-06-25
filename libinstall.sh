@@ -2,10 +2,10 @@
 # set -x
 
 SUDO=sudo
-SUDO='echo # sudo'
+# SUDO='echo # sudo'
 #SUDO=nothing
 CP=cp
-CP='echo # cp'
+# CP='echo # cp'
 
 # certain kexts are exceptions to automatic installation
 STANDARD_EXCEPTIONS="Sensors|dspci|WhateverName|TSCAdjustReset|XHCI"

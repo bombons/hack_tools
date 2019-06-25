@@ -54,4 +54,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-content
+*_macOS_*.dmg

@@ -6,7 +6,7 @@ source "$(dirname ${BASH_SOURCE[0]})"/colors.sh
 activate_colors
 
 plbuddy="/usr/libexec/PlistBuddy"
-plbuddy='echo # PlistBuddy'
+# plbuddy='echo # PlistBuddy'
 
 function get_plist_property
 # $1 plist path
