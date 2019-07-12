@@ -24,6 +24,7 @@ DEPRECATED=" $DEPRECATED"
 
 TAGCMD="$(dirname ${BASH_SOURCE[0]})"/tag
 TAG=tag_file
+TAG_COLOR=Grey
 SLE=/System/Library/Extensions
 LE=/Library/Extensions
 
@@ -77,7 +78,7 @@ function install_kext
         echo "${BLUE}==>${RESET} installing $1 to $KEXTDEST"
         remove_kext "$(basename $1)"
         $SUDO $CP -Rf $1 $KEXTDEST
-        $TAG -a Gray $KEXTDEST/"$(basename $1)"
+        $TAG -a $TAG_COLOR $KEXTDEST/"$(basename $1)"
     fi
 }
 
@@ -87,7 +88,7 @@ function install_app
         echo "${BLUE}==>${RESET} installing $1 to /Applications"
         $SUDO rm -Rf /Applications/"$(basename $1)"
         $CP -Rf $1 /Applications
-        $TAG -a Gray /Applications/"$(basename $1)"
+        $TAG -a $TAG_COLOR /Applications/"$(basename $1)"
     fi
 }
 
@@ -98,7 +99,7 @@ function install_binary
         echo "${BLUE}==>${RESET} installing $1 to /usr/local/bin"
         $SUDO rm -f /usr/bin/"$(basename $1)" /usr/local/bin/"$(basename $1)"
         $SUDO $CP -f $1 /usr/local/bin
-        $TAG -a Gray /usr/local/bin/"$(basename $1)"
+        $TAG -a $TAG_COLOR /usr/local/bin/"$(basename $1)"
     fi
 }
 
